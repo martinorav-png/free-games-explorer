@@ -97,6 +97,16 @@ function sortGames(games, sortValue) {
     return sorted;
 }
 
+function normalizeGenre(genre) {
+    if (!genre) return "";
+
+    return genre
+        .split(",")[0]      
+        .trim()            
+        .toLowerCase();     
+}
+
+
 /* =========================
    GENRES
 ========================= */
@@ -104,17 +114,22 @@ function populateGenres(games) {
     const genreSelect = document.getElementById("genreFilter");
     if (!genreSelect) return;
 
-    const genres = [...new Set(games.map(g => g.genre).filter(Boolean))].sort();
+    const genres = [...new Set(
+        games
+            .map(g => normalizeGenre(g.genre))
+            .filter(Boolean)
+    )].sort();
 
     genreSelect.innerHTML = `<option value="all">All</option>`;
 
     genres.forEach(genre => {
         const opt = document.createElement("option");
-        opt.value = genre.toLowerCase();
-        opt.textContent = genre;
+        opt.value = genre;
+        opt.textContent = genre.toUpperCase();
         genreSelect.appendChild(opt);
     });
 }
+
 
 /* =========================
    FILTERS + SEARCH + SORT
@@ -130,7 +145,8 @@ function applyFilters() {
     let filtered = allGames.filter(game => {
         const platform = getPlatform(game);
         const launcher = getLauncher(game);
-        const genre = (game.genre || "").toLowerCase();
+        const genre = normalizeGenre(game.genre);
+
 
         const platformMatch = platformValue === "all" || platform === platformValue;
         const launcherMatch = launcherValue === "all" || launcher === launcherValue;
