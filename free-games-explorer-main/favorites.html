@@ -4,44 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorites</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>My Favorites, Free Games Explorer</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <nav>
-        <h1>Free Game Explorer</h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="favorites.html">Favorites</a></li>
-        </ul>
-    </nav>
 
-    <main>
-        <h2>My Favorites</h2>
+    <header class="top-header">
+        <nav class="nav-left">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="favorites.html" class="nav-link">My Favourites</a>
+        </nav>
 
-        <section class="favorites-list">
-            <article class="game-card">
-                <div class="thumbnail">Thumbnail</div>
+        <h1 class="site-title">Free Games Explorer</h1>
 
-                <div class="game-info">
-                    <h3>Game title</h3>
-                    <p>Genre</p>
-                    <p>Publisher</p>
-                </div>
+        <div class="header-right">
+            <a href="login.html" class="nav-link login-btn">Log in</a>
+        </div>
+    </header>
 
-                <div class="game-actions">
-                    <a href="game.html">View details</a>
-                    <button>Remove from favorites</button>
-                </div>
+    <main class="favorites-page">
+        <h2 class="favorites-title">My Favorites</h2>
 
+        <div class="favorites-grid">
 
-            </article>
-        </section>
+            <p class="favorites-empty">
+                You have no favorite games yet.
+            </p>
+
+        </div>
     </main>
-
-    <script src="js/main.js"></script>
-
 
 </body>
 

@@ -11,6 +11,7 @@ const options = {
 };
 
 let allGames = [];
+let currentSearch = "";
 
 /* =========================
    FETCH
@@ -18,17 +19,28 @@ let allGames = [];
 async function getGames() {
     try {
         const res = await fetch(API_URL, options);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         allGames = await res.json();
+
         populateGenres(allGames);
         applyFilters();
     } catch (err) {
         console.error("Failed to fetch games", err);
+        const container = document.querySelector(".games-scroll");
+        if (container) container.innerHTML = `<p>Failed to load games. Check console.</p>`;
     }
 }
 
 /* =========================
-   INFERENCE HELPERS
+   HELPERS
 ========================= */
+function formatDate(dateString) {
+    if (!dateString) return "";
+    const parts = dateString.split("-");
+    if (parts.length !== 3) return dateString;
+    return `${parts[2]}.${parts[1]}.${parts[0]}`;
+}
+
 function getPlatform(game) {
     const p = (game.platform || "").toLowerCase();
     if (p.includes("browser")) return "browser";
@@ -56,15 +68,22 @@ function getLauncher(game) {
     return "other";
 }
 
+function renderLauncherBadge(launcher) {
+    if (launcher === "steam") return `<span class="badge badge-steam">Steam</span>`;
+    if (launcher === "epic") return `<span class="badge badge-epic">Epic</span>`;
+    if (launcher === "blizzard") return `<span class="badge badge-blizzard">Blizzard</span>`;
+    return "";
+}
+
 function sortGames(games, sortValue) {
     const sorted = [...games];
 
     if (sortValue === "az") {
-        sorted.sort((a, b) => a.title.localeCompare(b.title));
+        sorted.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
     }
 
     if (sortValue === "za") {
-        sorted.sort((a, b) => b.title.localeCompare(a.title));
+        sorted.sort((a, b) => (b.title || "").localeCompare(a.title || ""));
     }
 
     if (sortValue === "newest") {
@@ -85,11 +104,7 @@ function populateGenres(games) {
     const genreSelect = document.getElementById("genreFilter");
     if (!genreSelect) return;
 
-    const genres = [...new Set(
-        games
-            .map(g => g.genre)
-            .filter(Boolean)
-    )].sort();
+    const genres = [...new Set(games.map(g => g.genre).filter(Boolean))].sort();
 
     genreSelect.innerHTML = `<option value="all">All</option>`;
 
@@ -102,13 +117,15 @@ function populateGenres(games) {
 }
 
 /* =========================
-   FILTER LOGIC
+   FILTERS + SEARCH + SORT
 ========================= */
 function applyFilters() {
     const platformValue = document.getElementById("platformFilter")?.value || "all";
     const launcherValue = document.getElementById("launcherFilter")?.value || "all";
     const genreValue = document.getElementById("genreFilter")?.value || "all";
     const sortValue = document.getElementById("sortFilter")?.value || "default";
+
+    const search = (currentSearch || "").toLowerCase().trim();
 
     let filtered = allGames.filter(game => {
         const platform = getPlatform(game);
@@ -119,23 +136,18 @@ function applyFilters() {
         const launcherMatch = launcherValue === "all" || launcher === launcherValue;
         const genreMatch = genreValue === "all" || genre === genreValue;
 
-        return platformMatch && launcherMatch && genreMatch;
+        let searchMatch = true;
+        if (search) {
+            const title = (game.title || "").toLowerCase();
+            searchMatch = title.includes(search);
+        }
+
+        return platformMatch && launcherMatch && genreMatch && searchMatch;
     });
 
     filtered = sortGames(filtered, sortValue);
 
     renderGames(filtered);
-}
-
-
-/* =========================
-   BADGES
-========================= */
-function renderLauncherBadge(launcher) {
-    if (launcher === "steam") return `<span class="badge badge-steam">Steam</span>`;
-    if (launcher === "epic") return `<span class="badge badge-epic">Epic</span>`;
-    if (launcher === "blizzard") return `<span class="badge badge-blizzard">Blizzard</span>`;
-    return "";
 }
 
 /* =========================
@@ -146,7 +158,7 @@ function renderGames(games) {
     if (!container) return;
 
     if (games.length === 0) {
-        container.innerHTML = `<p>No games match the selected filters.</p>`;
+        container.innerHTML = `<p>No games match your filters or search.</p>`;
         return;
     }
 
@@ -172,8 +184,7 @@ function renderGames(games) {
                     <p>${game.platform}</p>
 
                     <div class="game-actions">
-                        <button type="button"
-                            onclick="window.location.href='game.html?id=${game.id}'">
+                        <button type="button" onclick="window.location.href='game.html?id=${game.id}'">
                             View Details
                         </button>
                         <button type="button">
@@ -197,15 +208,21 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("platformFilter")?.addEventListener("change", applyFilters);
     document.getElementById("launcherFilter")?.addEventListener("change", applyFilters);
     document.getElementById("genreFilter")?.addEventListener("change", applyFilters);
-    document.getElementById("sortFilter")
-    ?.addEventListener("change", applyFilters);
+    document.getElementById("sortFilter")?.addEventListener("change", applyFilters);
 
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+
+    if (searchForm && searchInput) {
+        searchForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            currentSearch = searchInput.value || "";
+            applyFilters();
+        });
+
+        searchInput.addEventListener("input", () => {
+            currentSearch = searchInput.value || "";
+            applyFilters();
+        });
+    }
 });
-
-function formatDate(dateString) {
-    if (!dateString) return "";
-    const parts = dateString.split("-");
-    if (parts.length !== 3) return dateString;
-    return `${parts[2]}.${parts[1]}.${parts[0]}`;
-}
-
