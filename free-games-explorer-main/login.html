@@ -3,45 +3,47 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Log in, Free Games Explorer</title>
+    <title>Login, Free Games Explorer</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="login-page">
+<body>
 
     <header class="top-header">
-        <div class="header-left">
+        <!-- Vasak -->
+        <nav class="nav-left">
             <a href="index.html" class="nav-link">Home</a>
-        </div>
-
-        <nav class="nav-center">
-            <span class="site-title">Free Games Explorer</span>
+            <a href="favorites.html" class="nav-link">My Favourites</a>
         </nav>
 
+        <!-- Keskel -->
+        <h1 class="site-title">Free Games Explorer</h1>
+
+        <!-- Parem, JÄTA ALLES ka siis kui tühi -->
         <div class="header-right">
-            <a href="index.html" class="nav-link">Back</a>
+            <!-- login lehel ei ole searchi -->
         </div>
     </header>
 
-    <main class="login-container">
+    <div class="login-container">
         <div class="login-card">
             <h2>Log in</h2>
 
-            <form id="loginForm">
+            <form>
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="you@example.com" required>
+                <input id="email" type="email" required>
 
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="••••••••" required>
+                <input id="password" type="password" required>
 
                 <button type="submit">Log in</button>
             </form>
 
             <p class="login-note">
-                Demo loginnimine, siia sa veel sisse ei saa!!!:PPP
+                This is a demo login page.
             </p>
         </div>
-    </main>
+    </div>
 
 </body>
 

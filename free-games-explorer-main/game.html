@@ -3,39 +3,40 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Details</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Game details, Free Game Explorer</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <nav>
-        <h1>Free Game Explorer</h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="favorites.html">Favorites</a></li>
-        </ul>
-    </nav>
 
-    <main>
-        <section class="game-details">
-            <h2>Game Name</h2>
-            <p>Short description</p>
+    <header class="top-header">
+        <nav class="nav-left">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="favorites.html" class="nav-link">My Favourites</a>
+        </nav>
 
-            <ul>
-                <li>Genre</li>
-                <li>Publisher</li>
-                <li>Release Date</li>
-            </ul>
+        <h1 class="site-title">Free Games Explorer</h1>
 
-            <button>Play now</button>
-            <button>Add to Favorites</button>
+        <div class="header-right">
+            <a href="login.html" class="nav-link login-btn">Log in</a>
+        </div>
+    </header>
 
-        </section>
+    <main class="details-page">
+        <div id="gameDetails" class="details-loading">Loading...</div>
     </main>
 
-    <script src="js/main.js"></script>
+    <!-- Lightbox overlay -->
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+        <div class="lightbox-controls">
+            <button type="button" class="lightbox-btn" data-action="prev">Prev</button>
+            <button type="button" class="lightbox-btn" data-action="next">Next</button>
+            <button type="button" class="lightbox-btn" data-action="close">Close</button>
+        </div>
+        <img id="lightboxImg" class="lightbox-img" alt="Screenshot preview">
+    </div>
 
+    <script src="js/game.js"></script>
 </body>
 
 </html>

@@ -30,44 +30,46 @@
 
     <div class="container">
         <aside class="filters">
+
             <div class="filter-box">
                 <h3>Platform</h3>
-                <select>
-                    <option>All</option>
-                    <option>PC</option>
-                    <option>Browser</option>
+                <select id="platformFilter">
+                    <option value="all">All</option>
+                    <option value="windows">Windows</option>
+                    <option value="browser">Browser</option>
+                </select>
+            </div>
+
+            <div class="filter-box">
+                <h3>Launcher</h3>
+                <select id="launcherFilter">
+                    <option value="all">All</option>
+                    <option value="steam">Steam</option>
+                    <option value="epic">Epic Games</option>
+                    <option value="blizzard">Blizzard</option>
                 </select>
             </div>
 
             <div class="filter-box">
                 <h3>Genre</h3>
-                <select>
-                    <option>All</option>
-                    <option>Shooter</option>
-                    <option>Racing</option>
-                    <option>MMORPG</option>
+                <select id="genreFilter">
+                    <option value="all">All</option>
                 </select>
             </div>
 
             <div class="filter-box">
-                <h3>Publisher</h3>
-                <select>
-                    <option>All</option>
-                    <option>Publisher 1</option>
-                    <option>Publisher 2</option>
+                <h3>Sort by</h3>
+                <select id="sortFilter">
+                    <option value="default">Default</option>
+                    <option value="az">A to Z</option>
+                    <option value="za">Z to A</option>
+                    <option value="newest">Release date, newest</option>
+                    <option value="oldest">Release date, oldest</option>
                 </select>
             </div>
 
-            <div class="filter-box">
-                <h3>Release Year</h3>
-                <select>
-                    <option>All</option>
-                    <option>2025</option>
-                    <option>2024</option>
-                    <option>2023</option>
-                </select>
-            </div>
         </aside>
+
 
         <main class="games-scroll">
             <!-- JS renderdab mängud siia -->
