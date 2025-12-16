@@ -14,22 +14,26 @@ const options = {
 };
 
 function renderGames(games) {
-    const gameContainer = document.querySelector('.games-scroll');
-    let html = '';
+    const gameContainer = document.querySelector(".games-scroll");
+    let html = "";
 
     games.forEach(game => {
         html += `
-            <div class="game-card">
-                <div class="thumbnail">
-                    <img src="${game.thumbnail}" alt="${game.title}">
-                </div>
-                <h3>${game.title}</h3>
-                <p>${game.publisher}</p>
-                <p>${formatDate(game.release_date)}</p>
-                <p>${game.platform}</p>
-                <div class="game-actions">
-                    <button onclick="window.location.href='game.html'">View Details</button>
-                    <button>Add to Favorites</button>
+            <div class="game-card" style="background-image: url('${game.thumbnail}')">
+                <div class="game-content">
+                    <div class="game-thumb">
+                        <img src="${game.thumbnail}" alt="${game.title}">
+                    </div>
+
+                    <h3>${game.title}</h3>
+                    <p>${game.publisher}</p>
+                    <p>${formatDate(game.release_date)}</p>
+                    <p>${game.platform}</p>
+
+                    <div class="game-actions">
+                        <button type="button" onclick="window.location.href='game.html'">View Details</button>
+                        <button type="button">Add to Favorites</button>
+                    </div>
                 </div>
             </div>
         `;
@@ -38,6 +42,7 @@ function renderGames(games) {
     gameContainer.innerHTML = html;
 }
 
+    
 async function getGames() {
     try {
         const response = await fetch(url, options);

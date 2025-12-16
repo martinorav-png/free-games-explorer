@@ -3,71 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
-<<<<<<< HEAD
     <title>Free Game Explorer</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <nav>
-        <h1>Free Game Explorer</h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="favorites.html">Favorites</a></li>
-        </ul>
-    </nav>
-
-    <main>
-        <aside class="filters">
-            <h2>Filters</h2>
-            <p>Genre filter</p>
-            <p>Platform, PC</p>
-        </aside>
-
-        <section class="game-list">
-            <article class="game-card">
-                <div class="thumbnail">Thumbnail</div>
-
-                <div class="game-info">
-                    <h3>Game title</h3>
-                    <p>Genre</p>
-                </div>
-
-                <div class="game-actions">
-                    <a href="game.html">View details</a>
-                    <button>Add to favorites</button>
-                </div>
-            </article>
-        </section>
-    </main>
-
-    <script src="js/main.js"></script>
-
-=======
-    <title>Free Games Explorer</title>
-    <link rel="stylesheet" href="css/style.css">
-
-</head>
-
-<body>
     <header class="top-header">
         <nav class="nav-left">
             <a href="index.html" class="nav-link">Home</a>
             <a href="favorites.html" class="nav-link">My Favourites</a>
         </nav>
 
-        <h1>Free Games Explorer</h1>
+        <h1 class="site-title">Free Games Explorer</h1>
 
-        <nav class="nav-right">
+        <div class="header-right">
+            <form id="searchForm" class="search">
+                <input id="searchInput" type="text" placeholder="Search for games..." autocomplete="off" />
+                <button type="submit">Search</button>
+            </form>
+
             <a href="login.html" class="nav-link login-btn">Log in</a>
-        </nav>
-
-        <form id="searchForm" class="search">
-            <input id="searchInput" type="text" placeholder="Search for Games..." autocomplete="off" />
-            <button type="submit">Search</button>
-        </form>
+        </div>
     </header>
+
 
     <div class="container">
         <aside class="filters">
@@ -111,43 +70,11 @@
         </aside>
 
         <main class="games-scroll">
-            <div class="game-card">
-                <div class="thumbnail">Thumbnail</div>
-                <h3>Game 1</h3>
-                <p>Developer 1</p>
-                <p>2025</p>
-                <p>PC</p>
-            </div>
-
-            <div class="game-card">
-                <div class="thumbnail">Thumbnail</div>
-                <h3>Game 2</h3>
-                <p>Developer 2</p>
-                <p>2024</p>
-                <p>Browser</p>
-            </div>
-
-            <div class="game-card">
-                <div class="thumbnail">Thumbnail</div>
-                <h3>Game 3</h3>
-                <p>Developer 3</p>
-                <p>2023</p>
-                <p>PC</p>
-            </div>
-
-            <div class="game-card">
-                <div class="thumbnail">Thumbnail</div>
-                <h3>Game 4</h3>
-                <p>Developer 4</p>
-                <p>2022</p>
-                <p>PC</p>
-            </div>
-
+            <!-- JS renderdab mängud siia -->
         </main>
     </div>
 
     <script src="js/main.js"></script>
->>>>>>> 77bac48 (Loodud API ühendus niiet ta tõmbab mängud sellest databasest koos nime ja info ja pildiga. CSS layout lehele. Lisatud algne login page ilma disainita.)
 </body>
 
 </html>
