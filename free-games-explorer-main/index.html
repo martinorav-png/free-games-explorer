@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>Free Game Explorer</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -43,6 +44,110 @@
 
     <script src="js/main.js"></script>
 
+=======
+    <title>Free Games Explorer</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <header class="top-header">
+        <nav class="nav-left">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="favorites.html" class="nav-link">My Favourites</a>
+        </nav>
+
+        <h1>Free Games Explorer</h1>
+
+        <nav class="nav-right">
+            <a href="login.html" class="nav-link login-btn">Log in</a>
+        </nav>
+
+        <form id="searchForm" class="search">
+            <input id="searchInput" type="text" placeholder="Search for Games..." autocomplete="off" />
+            <button type="submit">Search</button>
+        </form>
+    </header>
+
+    <div class="container">
+        <aside class="filters">
+            <div class="filter-box">
+                <h3>Platform</h3>
+                <select>
+                    <option>All</option>
+                    <option>PC</option>
+                    <option>Browser</option>
+                </select>
+            </div>
+
+            <div class="filter-box">
+                <h3>Genre</h3>
+                <select>
+                    <option>All</option>
+                    <option>Shooter</option>
+                    <option>Racing</option>
+                    <option>MMORPG</option>
+                </select>
+            </div>
+
+            <div class="filter-box">
+                <h3>Publisher</h3>
+                <select>
+                    <option>All</option>
+                    <option>Publisher 1</option>
+                    <option>Publisher 2</option>
+                </select>
+            </div>
+
+            <div class="filter-box">
+                <h3>Release Year</h3>
+                <select>
+                    <option>All</option>
+                    <option>2025</option>
+                    <option>2024</option>
+                    <option>2023</option>
+                </select>
+            </div>
+        </aside>
+
+        <main class="games-scroll">
+            <div class="game-card">
+                <div class="thumbnail">Thumbnail</div>
+                <h3>Game 1</h3>
+                <p>Developer 1</p>
+                <p>2025</p>
+                <p>PC</p>
+            </div>
+
+            <div class="game-card">
+                <div class="thumbnail">Thumbnail</div>
+                <h3>Game 2</h3>
+                <p>Developer 2</p>
+                <p>2024</p>
+                <p>Browser</p>
+            </div>
+
+            <div class="game-card">
+                <div class="thumbnail">Thumbnail</div>
+                <h3>Game 3</h3>
+                <p>Developer 3</p>
+                <p>2023</p>
+                <p>PC</p>
+            </div>
+
+            <div class="game-card">
+                <div class="thumbnail">Thumbnail</div>
+                <h3>Game 4</h3>
+                <p>Developer 4</p>
+                <p>2022</p>
+                <p>PC</p>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+>>>>>>> 77bac48 (Loodud API ühendus niiet ta tõmbab mängud sellest databasest koos nime ja info ja pildiga. CSS layout lehele. Lisatud algne login page ilma disainita.)
 </body>
 
 </html>
