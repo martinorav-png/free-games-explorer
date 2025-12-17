@@ -173,6 +173,8 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
 }
 
 .game-thumb img {
@@ -416,11 +418,14 @@ body {
 
 .badges {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 10px;
+    right: 10px;
     display: flex;
     gap: 6px;
+    z-index: 10;
+    pointer-events: none;
 }
+
 
 .badge {
     padding: 4px 8px;
@@ -439,4 +444,102 @@ body {
     padding: 6px 10px;
     border-radius: 999px;
     background: #1f2430;
+}
+
+.favorites-page {
+    padding: 20px;
+}
+
+.favorites-title {
+    font-size: 22px;
+    margin-bottom: 14px;
+}
+
+.favorites-empty {
+    opacity: 0.85;
+}
+
+.favorites-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.fav-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 220px;
+    gap: 14px;
+
+    background-color: #141821;
+    border: 1px solid #1f2430;
+    border-radius: 12px;
+    padding: 12px;
+
+    align-items: center;
+}
+
+.fav-thumb {
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fav-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.fav-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fav-title {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.fav-info p {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.fav-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fav-actions button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+@media (max-width: 900px) {
+    .fav-row {
+        grid-template-columns: 1fr;
+    }
+
+    .fav-actions {
+        flex-direction: row;
+    }
+
+    .fav-thumb {
+        height: 160px;
+    }
+}
+
+.crt-overlay {
+    pointer-events: none;
 }

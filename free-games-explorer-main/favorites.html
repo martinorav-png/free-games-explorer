@@ -26,15 +26,78 @@
     <main class="favorites-page">
         <h2 class="favorites-title">My Favorites</h2>
 
-        <div class="favorites-grid">
-            <p class="favorites-empty">You have no favorite games yet.</p>
-        </div>
+        <div id="favoritesList" class="favorites-list"></div>
     </main>
 
     <script src="js/auth.js"></script>
+    <script src="js/favorites.js"></script>
     <script>
+        function formatDateDDMMYYYY(dateStr) {
+            if (!dateStr) return "";
+            const parts = String(dateStr).split("-");
+            if (parts.length !== 3) return dateStr;
+            const [yyyy, mm, dd] = parts;
+            return `${dd}.${mm}.${yyyy}`;
+        }
+
+        function renderFavorites() {
+            const user = requireAuth();
+            if (!user) return;
+
+            const container = document.getElementById("favoritesList");
+            const favs = loadFavorites();
+
+            if (!favs.length) {
+                container.innerHTML = `<p class="favorites-empty">You have no favorite games yet.</p>`;
+                return;
+            }
+
+            let html = "";
+            favs.forEach(game => {
+                html += `
+                <div class="fav-row">
+                    <div class="fav-thumb">
+                        <img src="${game.thumbnail || ""}" alt="${game.title || "Game"}">
+                    </div>
+
+                    <div class="fav-info">
+                        <h3 class="fav-title">${game.title || ""}</h3>
+                        <p><strong>Genre:</strong> ${game.genre || ""}</p>
+                        <p><strong>Publisher:</strong> ${game.publisher || ""}</p>
+                        <p><strong>Release:</strong> ${formatDateDDMMYYYY(game.release_date)}</p>
+                        <p><strong>Platform:</strong> ${game.platform || ""}</p>
+                    </div>
+
+                    <div class="fav-actions">
+                        <button class="fav-details-btn" data-id="${game.id}">View Details</button>
+                        <button class="fav-remove-btn" data-id="${game.id}">Remove</button>
+                    </div>
+                </div>
+            `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        document.addEventListener("click", (e) => {
+            const details = e.target.closest(".fav-details-btn");
+            if (details) {
+                const id = details.dataset.id;
+                window.location.href = `game.html?id=${encodeURIComponent(id)}`;
+                return;
+            }
+
+            const removeBtn = e.target.closest(".fav-remove-btn");
+            if (removeBtn) {
+                const id = removeBtn.dataset.id;
+                removeFromFavorites(id);
+                renderFavorites();
+                return;
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", () => {
-            requireAuth();
+            renderFavorites();
         });
     </script>
 

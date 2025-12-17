@@ -101,9 +101,9 @@ function normalizeGenre(genre) {
     if (!genre) return "";
 
     return genre
-        .split(",")[0]      
-        .trim()            
-        .toLowerCase();     
+        .split(",")[0]
+        .trim()
+        .toLowerCase();
 }
 
 
@@ -147,7 +147,6 @@ function applyFilters() {
         const launcher = getLauncher(game);
         const genre = normalizeGenre(game.genre);
 
-
         const platformMatch = platformValue === "all" || platform === platformValue;
         const launcherMatch = launcherValue === "all" || launcher === launcherValue;
         const genreMatch = genreValue === "all" || genre === genreValue;
@@ -183,6 +182,12 @@ function renderGames(games) {
     games.forEach(game => {
         const launcher = getLauncher(game);
 
+        // favorites state (kui favorites.js olemas)
+        let favText = "Add to Favorites";
+        if (typeof isFavorite === "function") {
+            favText = isFavorite(game.id) ? "Remove Favorite" : "Add to Favorites";
+        }
+
         html += `
             <div class="game-card" style="background-image:url('${game.thumbnail}')">
                 <div class="game-content">
@@ -203,8 +208,12 @@ function renderGames(games) {
                         <button type="button" onclick="window.location.href='game.html?id=${game.id}'">
                             View Details
                         </button>
-                        <button type="button">
-                            Add to Favorites
+
+                        <button
+                            type="button"
+                            class="fav-btn"
+                            data-id="${game.id}">
+                            ${favText}
                         </button>
                     </div>
                 </div>
@@ -214,6 +223,32 @@ function renderGames(games) {
 
     container.innerHTML = html;
 }
+
+/* =========================
+   FAVORITES EVENTS
+========================= */
+document.addEventListener("click", (e) => {
+    const favBtn = e.target.closest(".fav-btn");
+    if (!favBtn) return;
+
+    // kui auth.js + favorites.js pole laetud, siis ei tee midagi
+    if (typeof getCurrentUser !== "function" || typeof toggleFavorite !== "function") return;
+
+    const user = getCurrentUser();
+    if (!user) {
+        window.location.href = `login.html?redirect=${encodeURIComponent("index.html")}`;
+        return;
+    }
+
+    const id = favBtn.dataset.id;
+    const game = allGames.find(g => String(g.id) === String(id));
+    if (!game) return;
+
+    const added = toggleFavorite(game);
+
+    // uuenda nupu tekst
+    favBtn.textContent = added ? "Remove Favorite" : "Add to Favorites";
+});
 
 /* =========================
    EVENTS
