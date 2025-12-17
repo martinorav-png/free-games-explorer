@@ -17,6 +17,8 @@ let currentSearch = "";
    FETCH
 ========================= */
 async function getGames() {
+    setUIState("loading", "Loading games...");
+
     try {
         const res = await fetch(API_URL, options);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -28,6 +30,8 @@ async function getGames() {
         console.error("Failed to fetch games", err);
         const container = document.querySelector(".games-scroll");
         if (container) container.innerHTML = `<p>Failed to load games. Check console.</p>`;
+        setUIState("error", "Failed to load games. Check console.");
+
     }
 }
 
@@ -106,6 +110,32 @@ function normalizeGenre(genre) {
         .toLowerCase();
 }
 
+function setUIState(type, message) {
+  const el = document.getElementById("uiState");
+  if (!el) return;
+
+  if (!type) {
+    el.hidden = true;
+    el.className = "ui-state";
+    el.innerHTML = "";
+    return;
+  }
+
+  el.hidden = false;
+  el.className = `ui-state ui-${type}`;
+
+  if (type === "loading") {
+    el.innerHTML = `
+      <div class="spinner"></div>
+      <div class="ui-text">${message || "Loading..."}</div>
+    `;
+    return;
+  }
+
+  el.innerHTML = `<div class="ui-text">${message || ""}</div>`;
+}
+
+
 
 /* =========================
    GENRES
@@ -169,6 +199,13 @@ function applyFilters() {
    RENDER
 ========================= */
 function renderGames(games) {
+    if (games.length === 0) {
+  setUIState("empty", "No games match your filters or search.");
+  container.querySelectorAll(".game-card").forEach(n => n.remove());
+  return;
+}
+setUIState(null);
+
     const container = document.querySelector(".games-scroll");
     if (!container) return;
 
