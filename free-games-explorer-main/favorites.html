@@ -27,13 +27,16 @@
         <h2 class="favorites-title">My Favorites</h2>
 
         <div class="favorites-grid">
-
-            <p class="favorites-empty">
-                You have no favorite games yet.
-            </p>
-
+            <p class="favorites-empty">You have no favorite games yet.</p>
         </div>
     </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            requireAuth();
+        });
+    </script>
 
 </body>
 

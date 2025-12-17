@@ -3,47 +3,73 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Login, Free Games Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in, Free Games Explorer</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
     <header class="top-header">
-        <!-- Vasak -->
         <nav class="nav-left">
             <a href="index.html" class="nav-link">Home</a>
             <a href="favorites.html" class="nav-link">My Favourites</a>
         </nav>
 
-        <!-- Keskel -->
         <h1 class="site-title">Free Games Explorer</h1>
 
-        <!-- Parem, JÄTA ALLES-->
         <div class="header-right">
-            <!-- login lehel ei ole searchi -->
+            <a href="login.html" class="nav-link login-btn">Log in</a>
         </div>
     </header>
 
-    <div class="login-container">
+    <main class="login-container">
         <div class="login-card">
             <h2>Log in</h2>
 
-            <form>
-                <label for="email">Email</label>
-                <input id="email" type="email" required>
+            <form id="loginForm">
+                <label for="username">Username</label>
+                <input id="username" type="text" placeholder="martin" autocomplete="username" required>
 
                 <label for="password">Password</label>
-                <input id="password" type="password" required>
+                <input id="password" type="password" placeholder="1234" autocomplete="current-password" required>
 
                 <button type="submit">Log in</button>
             </form>
 
+            <p id="loginError" class="login-note" style="display:none; color:#ff9aa2;">
+                Invalid username or password.
+            </p>
+
             <p class="login-note">
-                This is a demo login page.
+                Demo login, use: username <strong>martin</strong>, password <strong>1234</strong>
             </p>
         </div>
-    </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+        const loginForm = document.getElementById("loginForm");
+        const errorEl = document.getElementById("loginError");
+
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get("redirect") || "index.html";
+
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (username.toLowerCase() === "martin" && password === "1234") {
+                setCurrentUser({ username });
+                window.location.href = redirect;
+                return;
+            }
+
+            errorEl.style.display = "block";
+        });
+    </script>
 
 </body>
 

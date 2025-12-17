@@ -433,78 +433,10 @@ body {
 .badge-epic { background: #2a2a2a; }
 .badge-blizzard { background: #0a84ff; }
 
-
-/* =========================
-   FAVORITES PAGE
-========================= */
-
-.favorites-page {
-    padding: 20px;
-}
-
-.favorites-title {
-    font-size: 22px;
-    margin-bottom: 16px;
-}
-
-.favorites-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-}
-
-/* reuse game-card look */
-.favorite-card {
-    background-color: #141821;
-    border: 1px solid #1f2430;
-    border-radius: 14px;
-    overflow: hidden;
-    position: relative;
-}
-
-.favorite-thumb img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    display: block;
-}
-
-.favorite-content {
-    padding: 12px;
-}
-
-.favorite-content h3 {
-    font-size: 16px;
-    margin-bottom: 6px;
-}
-
-.favorite-content p {
+.user-chip {
     font-size: 13px;
-    opacity: 0.85;
-    margin-bottom: 4px;
-}
-
-.favorite-actions {
-    margin-top: 10px;
-    display: flex;
-    gap: 8px;
-}
-
-.favorite-actions button {
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: none;
-    background-color: #1f2430;
-    color: white;
-    cursor: pointer;
-}
-
-.favorite-actions button:hover {
-    background-color: #2a3040;
-}
-
-/* empty state */
-.favorites-empty {
-    opacity: 0.75;
-    font-size: 14px;
+    opacity: 0.9;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #1f2430;
 }
