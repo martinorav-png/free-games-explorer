@@ -1,46 +1,38 @@
-/* ===================================
-   PLAYSTATION MAGAZINE inspireeritud CSS disain
-=================================== */
-
+/* PLAYSTATION MAGAZINE inspired CSS design, accessibility features */
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Archivo+Black&display=swap');
 
 :root {
-    /* Magazine Color Palette */
     --color-white: #ffffff;
     --color-black: #000000;
     --color-off-black: #1a1a1a;
     --color-gray: #666666;
     --color-light-gray: #e5e5e5;
     
-    /* Purple Colorway - Metal Gear Solid vibes */
     --color-purple-dark: #4a0e4e;
     --color-purple: #8b4789;
     --color-purple-light: #b47eb3;
     --color-magenta: #d946a6;
     --color-pink: #e879c6;
     
-    /* Typography */
     --font-display: 'Anton', sans-serif;
     --font-headline: 'Archivo Black', sans-serif;
     --font-body: 'Oswald', sans-serif;
     
-    /* Spacing */
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
     --space-lg: 24px;
     --space-xl: 32px;
     
-    /* Borders */
     --border-thin: 1px;
     --border-medium: 2px;
     --border-thick: 4px;
+    
+    /* Gradient */
+    --gradient: linear-gradient(135deg, #C1AAC4, #D79189, #AF587B, #EEE8EC);
 }
 
-/* ===================================
-   BASE STYLES
-=================================== */
-
+/* BASE */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -55,7 +47,7 @@ body {
     line-height: 1.4;
 }
 
-/* Subtle texture overlay */
+/* Texture overlay */
 body::before {
     content: '';
     position: fixed;
@@ -65,11 +57,7 @@ body::before {
     z-index: 9999;
 }
 
-/* ===================================
-   ACCESSIBILITY - UTILITIES
-=================================== */
-
-/* Visually hidden but available to screen readers */
+/* ACCESSIBILITY UTILITIES */
 .visually-hidden {
     position: absolute;
     width: 1px;
@@ -82,7 +70,6 @@ body::before {
     border-width: 0;
 }
 
-/* Skip to main content link */
 .skip-link {
     position: absolute;
     top: -100px;
@@ -93,7 +80,7 @@ body::before {
     text-decoration: none;
     font-weight: 700;
     z-index: 10000;
-    border: 3px solid #8b4789;
+    border: 3px solid #AF587B;
     font-family: 'Oswald', sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -104,10 +91,7 @@ body::before {
     top: 20px;
 }
 
-/* ===================================
-   HEADER
-=================================== */
-
+/* HEADER */
 .top-header {
     position: sticky;
     top: 0;
@@ -116,16 +100,13 @@ body::before {
     border-bottom: var(--border-thick) solid var(--color-black);
     padding: var(--space-md) var(--space-lg);
     box-shadow: 0 2px 0 var(--color-purple);
-}
-
-.top-header {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: var(--space-lg);
 }
 
-/* Navigation - Magazine sections */
+/* Navigation */
 .nav-left {
     display: flex;
     gap: var(--space-xs);
@@ -160,11 +141,11 @@ body::before {
 }
 
 .nav-link:focus-visible {
-    outline: 4px solid #8b4789;
+    outline: 4px solid #AF587B;
     outline-offset: 4px;
-    background: #000;
+    background: var(--gradient);
     color: #fff;
-    box-shadow: 6px 6px 0 #8b4789;
+    box-shadow: 6px 6px 0 #AF587B;
 }
 
 /* Site Title */
@@ -187,19 +168,10 @@ body::before {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(
-        90deg,
-        var(--color-purple-dark) 0%,
-        var(--color-purple) 33%,
-        var(--color-magenta) 66%,
-        var(--color-pink) 100%
-    );
+    background: linear-gradient(90deg, var(--color-purple-dark) 0%, var(--color-purple) 33%, var(--color-magenta) 66%, var(--color-pink) 100%);
 }
 
-/* ===================================
-   SEARCH & HEADER RIGHT
-=================================== */
-
+/* SEARCH & HEADER RIGHT */
 .header-right {
     display: flex;
     align-items: center;
@@ -230,18 +202,13 @@ body::before {
 
 .search input:focus {
     outline: none;
-    box-shadow: 
-        0 0 0 2px var(--color-white),
-        0 0 0 4px var(--color-purple);
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-purple);
 }
 
 .search input:focus-visible {
-    outline: 4px solid #8b4789;
+    outline: 4px solid #AF587B;
     outline-offset: 3px;
-    box-shadow: 
-        0 0 0 3px #fff,
-        0 0 0 7px #8b4789,
-        0 0 20px rgba(139, 71, 137, 0.3);
+    box-shadow: 0 0 0 3px #fff, 0 0 0 7px #AF587B, 0 0 20px rgba(193, 170, 196, 0.3);
 }
 
 .search button,
@@ -286,20 +253,14 @@ body::before {
     color: var(--color-black);
 }
 
-/* ===================================
-   LAYOUT
-=================================== */
-
+/* LAYOUT */
 .container {
     display: flex;
     min-height: calc(100vh - 80px);
     background: var(--color-white);
 }
 
-/* ===================================
-   FILTERS SIDEBAR
-=================================== */
-
+/* FILTERS SIDEBAR */
 .filters {
     width: 240px;
     padding: var(--space-lg);
@@ -359,17 +320,14 @@ body::before {
 }
 
 .filter-box select:focus-visible {
-    outline: 4px solid #8b4789;
+    outline: 4px solid #AF587B;
     outline-offset: 3px;
-    border-color: #8b4789;
-    box-shadow: 0 0 0 6px rgba(139, 71, 137, 0.2);
+    border-color: #AF587B;
+    box-shadow: 0 0 0 6px rgba(193, 170, 196, 0.2);
     background: #f9f5fa;
 }
 
-/* ===================================
-   GAMES GRID
-=================================== */
-
+/* GAMES GRID */
 .games-scroll {
     flex: 1;
     padding: var(--space-xl);
@@ -381,10 +339,7 @@ body::before {
     background: var(--color-white);
 }
 
-/* ===================================
-   GAME CARDS
-=================================== */
-
+/* GAME CARDS */
 .game-card {
     position: relative;
     height: 420px;
@@ -403,12 +358,7 @@ body::before {
     left: 0;
     width: 8px;
     height: 100%;
-    background: linear-gradient(
-        180deg,
-        var(--color-purple-dark) 0%,
-        var(--color-purple) 50%,
-        var(--color-magenta) 100%
-    );
+    background: linear-gradient(180deg, var(--color-purple-dark) 0%, var(--color-purple) 50%, var(--color-magenta) 100%);
     opacity: 0;
     transition: opacity 0.2s ease;
     z-index: 10;
@@ -423,17 +373,15 @@ body::before {
     opacity: 1;
 }
 
-/* Game card focus-within (when tabbing to buttons inside) */
+/* Tab focus (focus-within) */
 .game-card:focus-within {
     outline: 4px solid #d946a6;
     outline-offset: 4px;
     transform: translate(-4px, -4px);
-    box-shadow: 
-        8px 8px 0 #d946a6,
-        0 0 30px rgba(217, 70, 166, 0.4);
+    box-shadow: 8px 8px 0 #d946a6, 0 0 30px rgba(217, 70, 166, 0.4);
 }
 
-/* Background image - subtle duotone */
+/* Background image */
 .game-card::before {
     content: '';
     position: absolute;
@@ -460,17 +408,10 @@ body::before {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
-    background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.98) 0%,
-        rgba(255, 255, 255, 0.95) 100%
-    );
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
 }
 
-/* ===================================
-   GAME THUMBNAIL
-=================================== */
-
+/* GAME THUMBNAIL */
 .game-thumb {
     width: 100%;
     height: 180px;
@@ -501,10 +442,7 @@ body::before {
     transform: scale(1.05);
 }
 
-/* ===================================
-   BADGES
-=================================== */
-
+/* BADGES */
 .badges {
     position: absolute;
     top: 10px;
@@ -557,10 +495,7 @@ body::before {
     50% { transform: scale(1.05); }
 }
 
-/* ===================================
-   GAME INFO TEXT
-=================================== */
-
+/* GAME INFO TEXT */
 .game-content h3 {
     font-family: var(--font-headline);
     font-size: 20px;
@@ -585,7 +520,7 @@ body::before {
     line-height: 1.3;
 }
 
-/* Game meta list for accessibility */
+/* Game meta for accessibility */
 .game-meta {
     display: contents;
 }
@@ -604,10 +539,7 @@ body::before {
     line-height: 1.3;
 }
 
-/* ===================================
-   GAME ACTIONS
-=================================== */
-
+/* GAME ACTIONS */
 .game-actions {
     margin-top: auto;
     display: flex;
@@ -642,9 +574,9 @@ body::before {
 }
 
 .game-actions button:focus-visible {
-    outline: 3px solid #8b4789;
+    outline: 3px solid #AF587B;
     outline-offset: 2px;
-    background: #8b4789;
+    background: var(--gradient);
     color: #fff;
     transform: translateY(-3px);
     box-shadow: 4px 4px 0 #000;
@@ -664,17 +596,15 @@ body::before {
     box-shadow: 3px 3px 0 var(--color-black) !important;
 }
 
-/* ===================================
-   ARROW KEY NAVIGATION - FLOATING TOOLTIP
-=================================== */
+/* ARROW KEY NAVIGATION */
 
-/* Keyboard instructions - FLOATING TOOLTIP */
+/* Keyboard instructions tooltip - bottom right */
 .keyboard-instructions {
     position: fixed;
     bottom: 20px;
     right: 20px;
     background: rgba(0, 0, 0, 0.9);
-    border: 2px solid #8b4789;
+    border: 2px solid #AF587B;
     padding: 10px 16px;
     border-radius: 6px;
     z-index: 1000;
@@ -692,19 +622,19 @@ body::before {
 }
 
 .keyboard-instructions strong {
-    color: #e879c6;
+    color: #EEE8EC;
     font-weight: 700;
 }
 
-/* Card focused state with arrow keys, oluline nähtavus */
+/* Arrow key focused card */
 .game-card.card-focused {
-    outline: 6px solid #8b4789;
+    outline: 6px solid #AF587B;
     outline-offset: 6px;
     transform: translate(0, 0);
     box-shadow: 
-        0 0 0 12px rgba(139, 71, 137, 0.4),
-        0 0 40px rgba(139, 71, 137, 0.6),
-        0 0 80px rgba(139, 71, 137, 0.3);
+        0 0 0 12px rgba(193, 170, 196, 0.4),
+        0 0 40px rgba(215, 145, 137, 0.6),
+        0 0 80px rgba(175, 88, 123, 0.3);
     z-index: 10;
     position: relative;
 }
@@ -716,10 +646,10 @@ body::before {
 
 .game-card.card-focused .game-content {
     background: rgba(255, 255, 255, 1);
-    border: 2px solid #b47eb3;
+    border: 2px solid #D79189;
 }
 
-/* Pulse animation for focused card - STRONGER */
+/* Pulse animation */
 .game-card.card-focused {
     animation: cardFocusPulse 1.5s ease-in-out infinite;
 }
@@ -727,19 +657,19 @@ body::before {
 @keyframes cardFocusPulse {
     0%, 100% {
         box-shadow: 
-            0 0 0 12px rgba(139, 71, 137, 0.4),
-            0 0 40px rgba(139, 71, 137, 0.6),
-            0 0 80px rgba(139, 71, 137, 0.3);
+            0 0 0 12px rgba(193, 170, 196, 0.4),
+            0 0 40px rgba(215, 145, 137, 0.6),
+            0 0 80px rgba(175, 88, 123, 0.3);
     }
     50% {
         box-shadow: 
-            0 0 0 12px rgba(139, 71, 137, 0.6),
-            0 0 60px rgba(139, 71, 137, 0.8),
-            0 0 100px rgba(139, 71, 137, 0.5);
+            0 0 0 12px rgba(193, 170, 196, 0.6),
+            0 0 60px rgba(215, 145, 137, 0.8),
+            0 0 100px rgba(175, 88, 123, 0.5);
     }
 }
 
-/* Arrow key indicator*/
+/* Arrow indicator - compact badge */
 .game-card::after {
     display: none;
 }
@@ -752,7 +682,7 @@ body::before {
     position: absolute;
     top: 8px;
     left: 8px;
-    background: #8b4789;
+    background: var(--gradient);
     color: white;
     padding: 3px 5px;
     font-size: 8px;
@@ -768,17 +698,14 @@ body::before {
     white-space: nowrap;
 }
 
-/* Mobile - hide arrow indicator */
+/* Mobile hide arrow */
 @media (max-width: 768px) {
     .game-card.card-focused::after {
         display: none;
     }
 }
 
-/* ===================================
-   FAVORITES PAGE
-=================================== */
-
+/* FAVORITES PAGE */
 .favorites-page {
     padding: var(--space-xl);
     background: var(--color-white);
@@ -804,11 +731,7 @@ body::before {
     left: 0;
     width: 200px;
     height: 4px;
-    background: linear-gradient(
-        90deg,
-        var(--color-purple) 0%,
-        var(--color-magenta) 100%
-    );
+    background: linear-gradient(90deg, var(--color-purple) 0%, var(--color-magenta) 100%);
 }
 
 .favorites-empty {
@@ -844,11 +767,7 @@ body::before {
     top: 0;
     bottom: 0;
     width: 6px;
-    background: linear-gradient(
-        180deg,
-        var(--color-purple) 0%,
-        var(--color-magenta) 100%
-    );
+    background: linear-gradient(180deg, var(--color-purple) 0%, var(--color-magenta) 100%);
     opacity: 0;
     transition: opacity 0.2s ease;
 }
@@ -922,10 +841,7 @@ body::before {
     box-shadow: 3px 3px 0 var(--color-purple);
 }
 
-/* ===================================
-   DETAILS PAGE
-=================================== */
-
+/* DETAILS PAGE */
 .details-page {
     padding: var(--space-xl);
     background: var(--color-white);
@@ -1084,10 +1000,7 @@ body::before {
     display: block;
 }
 
-/* ===================================
-   LIGHTBOX
-=================================== */
-
+/* LIGHTBOX */
 .lightbox {
     position: fixed;
     inset: 0;
@@ -1134,10 +1047,7 @@ body::before {
     box-shadow: 8px 8px 0 var(--color-purple);
 }
 
-/* ===================================
-   LOGIN PAGE
-=================================== */
-
+/* LOGIN PAGE */
 .login-container {
     display: flex;
     justify-content: center;
@@ -1208,9 +1118,7 @@ body::before {
 
 .login-card input:focus {
     outline: none;
-    box-shadow: 
-        0 0 0 2px var(--color-white),
-        0 0 0 4px var(--color-purple);
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-purple);
 }
 
 .login-card button {
@@ -1242,10 +1150,7 @@ body::before {
     text-align: center;
 }
 
-/* ===================================
-   UI STATE
-=================================== */
-
+/* UI STATE */
 .ui-state {
     grid-column: 1 / -1;
     text-align: center;
@@ -1273,10 +1178,7 @@ body::before {
     to { transform: rotate(360deg); }
 }
 
-/* ===================================
-   RESPONSIVE
-=================================== */
-
+/* RESPONSIVE */
 @media (max-width: 1024px) {
     .games-scroll {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1315,16 +1217,13 @@ body::before {
         grid-template-columns: 1fr;
     }
     
-    /* Ensure adequate touch targets on mobile */
-    button,
-    a,
-    select,
-    input {
+    /* Touch targets */
+    button, a, select, input {
         min-height: 44px;
         min-width: 44px;
     }
     
-    /* Keyboard instructions smaller on mobile */
+    /* Smaller instructions on mobile */
     .keyboard-instructions {
         bottom: 10px;
         right: 10px;
@@ -1337,42 +1236,32 @@ body::before {
     }
 }
 
-/* ===================================
-   ACCESSIBILITY - FOCUS STATES
-=================================== */
-
+/* FOCUS STATES - ENHANCED */
 *:focus {
     outline: none;
 }
 
-/* General interactive elements focus */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-    outline: 4px solid #8b4789;
+    outline: 4px solid #AF587B;
     outline-offset: 4px;
-    box-shadow: 0 0 0 8px rgba(139, 71, 137, 0.3);
+    box-shadow: 0 0 0 8px rgba(193, 170, 196, 0.3);
 }
 
-/* Button focus */
 button:focus-visible {
     outline: 4px solid #000;
     outline-offset: 3px;
     box-shadow: 
         0 0 0 7px #fff,
-        0 0 0 11px #8b4789,
-        0 0 20px rgba(139, 71, 137, 0.4);
+        0 0 0 11px #AF587B,
+        0 0 20px rgba(193, 170, 196, 0.4);
 }
 
-/* ===================================
-   REDUCED MOTION ja HIGH CONTRAST
-=================================== */
-
+/* REDUCED MOTION & HIGH CONTRAST */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
@@ -1388,37 +1277,37 @@ button:focus-visible {
 }
 
 @media (prefers-contrast: high) {
-    /* Stronger outlines */
     *:focus-visible {
         outline-width: 5px;
         outline-offset: 5px;
     }
     
-    /* Stronger borders */
-    .game-card,
-    .filter-box,
-    button {
+    .game-card, .filter-box, button {
         border-width: 3px;
     }
     
-    /* Remove subtle backgrounds */
     .game-content {
         background: var(--color-white);
     }
 }
 
 
-/* ===================================
-   PRINT STYLES
-=================================== */
 
+/* Dot pattern */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--color-black) 0.5px, transparent 0.5px);
+    background-size: 4px 4px;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* PRINT */
 @media print {
-    .skip-link,
-    .crt-overlay,
-    .filters,
-    .search,
-    .game-actions,
-    .keyboard-instructions {
+    .skip-link, .crt-overlay, .filters, .search, .game-actions, .keyboard-instructions {
         display: none;
     }
     
