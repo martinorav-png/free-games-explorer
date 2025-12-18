@@ -7,27 +7,27 @@
     --color-off-black: #1a1a1a;
     --color-gray: #666666;
     --color-light-gray: #e5e5e5;
-    
+
     --color-purple-dark: #4a0e4e;
     --color-purple: #8b4789;
     --color-purple-light: #b47eb3;
     --color-magenta: #d946a6;
     --color-pink: #e879c6;
-    
+
     --font-display: 'Anton', sans-serif;
     --font-headline: 'Archivo Black', sans-serif;
     --font-body: 'Oswald', sans-serif;
-    
+
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
     --space-lg: 24px;
     --space-xl: 32px;
-    
+
     --border-thin: 1px;
     --border-medium: 2px;
     --border-thick: 4px;
-    
+
     /* Gradient */
     --gradient: linear-gradient(135deg, #C1AAC4, #D79189, #AF587B, #EEE8EC);
 }
@@ -55,6 +55,18 @@ body::before {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3' numOctaves='1' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 9999;
+}
+
+/* Dot pattern */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--color-black) 0.5px, transparent 0.5px);
+    background-size: 4px 4px;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 9998;
 }
 
 /* ACCESSIBILITY UTILITIES */
@@ -89,6 +101,24 @@ body::before {
 
 .skip-link:focus {
     top: 20px;
+}
+
+/* GRADIENT BUTTON ANIMATION */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.btn-gradient-hover {
+    background-image: none;
+}
+
+.btn-gradient-hover:hover {
+    background-image: var(--gradient) !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
+    color: var(--color-white) !important;
 }
 
 /* HEADER */
@@ -211,6 +241,7 @@ body::before {
     box-shadow: 0 0 0 3px #fff, 0 0 0 7px #AF587B, 0 0 20px rgba(193, 170, 196, 0.3);
 }
 
+/* Header buttons */
 .search button,
 .login-btn {
     padding: 8px 16px;
@@ -228,10 +259,15 @@ body::before {
     letter-spacing: 0.5px;
 }
 
+/* IMPORTANT: force gradient on hover */
 .search button:hover,
 .login-btn:hover {
-    background: var(--color-purple);
-    border-color: var(--color-purple);
+    background-image: var(--gradient) !important;
+    background-color: transparent !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
+    border-color: var(--color-black) !important;
+    color: var(--color-white) !important;
     transform: translateY(-2px);
     box-shadow: 4px 4px 0 var(--color-black);
 }
@@ -240,6 +276,17 @@ body::before {
 .login-btn:active {
     transform: translateY(0);
     box-shadow: 2px 2px 0 var(--color-black);
+}
+
+.search button:focus-visible,
+.login-btn:focus-visible {
+    outline: 4px solid #AF587B;
+    outline-offset: 4px;
+    background-image: var(--gradient) !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
+    color: #fff;
+    box-shadow: 6px 6px 0 #AF587B;
 }
 
 .user-chip {
@@ -561,9 +608,13 @@ body::before {
     letter-spacing: 0.3px;
 }
 
+/* IMPORTANT: force gradient on hover for game buttons too */
 .game-actions button:hover {
-    background: var(--color-black);
-    color: var(--color-white);
+    background-image: var(--gradient) !important;
+    background-color: transparent !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
+    color: var(--color-white) !important;
     transform: translateY(-2px);
     box-shadow: 3px 3px 0 var(--color-purple);
 }
@@ -576,13 +627,15 @@ body::before {
 .game-actions button:focus-visible {
     outline: 3px solid #AF587B;
     outline-offset: 2px;
-    background: var(--gradient);
+    background-image: var(--gradient) !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
     color: #fff;
     transform: translateY(-3px);
     box-shadow: 4px 4px 0 #000;
 }
 
-/* Favorite button active state */
+/* Favorite button active state, keep it solid and readable */
 .btn-favorite-active {
     background: #b21f7e !important;
     border-color: #b21f7e !important;
@@ -594,11 +647,13 @@ body::before {
     background: #8b1860 !important;
     border-color: #8b1860 !important;
     box-shadow: 3px 3px 0 var(--color-black) !important;
+    animation: none !important;
+    background-image: none !important;
 }
 
 /* ARROW KEY NAVIGATION */
 
-/* Keyboard instructions tooltip - bottom right */
+/* Keyboard instructions tooltip, bottom right */
 .keyboard-instructions {
     position: fixed;
     bottom: 20px;
@@ -631,7 +686,7 @@ body::before {
     outline: 6px solid #AF587B;
     outline-offset: 6px;
     transform: translate(0, 0);
-    box-shadow: 
+    box-shadow:
         0 0 0 12px rgba(193, 170, 196, 0.4),
         0 0 40px rgba(215, 145, 137, 0.6),
         0 0 80px rgba(175, 88, 123, 0.3);
@@ -656,20 +711,20 @@ body::before {
 
 @keyframes cardFocusPulse {
     0%, 100% {
-        box-shadow: 
+        box-shadow:
             0 0 0 12px rgba(193, 170, 196, 0.4),
             0 0 40px rgba(215, 145, 137, 0.6),
             0 0 80px rgba(175, 88, 123, 0.3);
     }
     50% {
-        box-shadow: 
+        box-shadow:
             0 0 0 12px rgba(193, 170, 196, 0.6),
             0 0 60px rgba(215, 145, 137, 0.8),
             0 0 100px rgba(175, 88, 123, 0.5);
     }
 }
 
-/* Arrow indicator - compact badge */
+/* Arrow indicator, compact badge */
 .game-card::after {
     display: none;
 }
@@ -682,7 +737,9 @@ body::before {
     position: absolute;
     top: 8px;
     left: 8px;
-    background: var(--gradient);
+    background-image: var(--gradient);
+    background-size: 220% 220%;
+    animation: gradientShift 1.6s ease infinite;
     color: white;
     padding: 3px 5px;
     font-size: 8px;
@@ -835,8 +892,11 @@ body::before {
 }
 
 .fav-actions button:hover {
-    background: var(--color-black);
-    color: var(--color-white);
+    background-image: var(--gradient) !important;
+    background-color: transparent !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
+    color: var(--color-white) !important;
     transform: translateY(-2px);
     box-shadow: 3px 3px 0 var(--color-purple);
 }
@@ -967,8 +1027,11 @@ body::before {
 }
 
 .details-link:hover {
-    background: var(--color-purple);
-    border-color: var(--color-purple);
+    background-image: var(--gradient) !important;
+    background-color: transparent !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
+    border-color: var(--color-black) !important;
     transform: translateY(-2px);
     box-shadow: 4px 4px 0 var(--color-black);
 }
@@ -1036,8 +1099,11 @@ body::before {
 }
 
 .lightbox-btn:hover {
-    background: var(--color-purple);
-    border-color: var(--color-purple);
+    background-image: var(--gradient) !important;
+    background-color: transparent !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
+    border-color: var(--color-black) !important;
 }
 
 .lightbox-img {
@@ -1137,8 +1203,11 @@ body::before {
 }
 
 .login-card button:hover {
-    background: var(--color-purple);
-    border-color: var(--color-purple);
+    background-image: var(--gradient) !important;
+    background-color: transparent !important;
+    background-size: 220% 220% !important;
+    animation: gradientShift 1.6s ease infinite !important;
+    border-color: var(--color-black) !important;
     transform: translateY(-2px);
     box-shadow: 4px 4px 0 var(--color-black);
 }
@@ -1183,11 +1252,11 @@ body::before {
     .games-scroll {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
-    
+
     .fav-row {
         grid-template-columns: 1fr;
     }
-    
+
     .fav-actions {
         flex-direction: row;
     }
@@ -1198,31 +1267,31 @@ body::before {
         grid-template-columns: 1fr;
         gap: var(--space-md);
     }
-    
+
     .site-title {
         font-size: 24px;
     }
-    
+
     .container {
         flex-direction: column;
     }
-    
+
     .filters {
         width: 100%;
         border-right: none;
         border-bottom: var(--border-medium) solid var(--color-black);
     }
-    
+
     .games-scroll {
         grid-template-columns: 1fr;
     }
-    
+
     /* Touch targets */
     button, a, select, input {
         min-height: 44px;
         min-width: 44px;
     }
-    
+
     /* Smaller instructions on mobile */
     .keyboard-instructions {
         bottom: 10px;
@@ -1230,13 +1299,13 @@ body::before {
         padding: 8px 12px;
         max-width: 200px;
     }
-    
+
     .keyboard-instructions p {
         font-size: 10px;
     }
 }
 
-/* FOCUS STATES - ENHANCED */
+/* FOCUS STATES, ENHANCED */
 *:focus {
     outline: none;
 }
@@ -1253,7 +1322,7 @@ select:focus-visible {
 button:focus-visible {
     outline: 4px solid #000;
     outline-offset: 3px;
-    box-shadow: 
+    box-shadow:
         0 0 0 7px #fff,
         0 0 0 11px #AF587B,
         0 0 20px rgba(193, 170, 196, 0.4);
@@ -1266,11 +1335,11 @@ button:focus-visible {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-    
+
     .skip-link {
         transition: none;
     }
-    
+
     .game-card.card-focused {
         animation: none;
     }
@@ -1281,28 +1350,14 @@ button:focus-visible {
         outline-width: 5px;
         outline-offset: 5px;
     }
-    
+
     .game-card, .filter-box, button {
         border-width: 3px;
     }
-    
+
     .game-content {
         background: var(--color-white);
     }
-}
-
-
-
-/* Dot pattern */
-body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, var(--color-black) 0.5px, transparent 0.5px);
-    background-size: 4px 4px;
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 9998;
 }
 
 /* PRINT */
@@ -1310,13 +1365,13 @@ body::after {
     .skip-link, .crt-overlay, .filters, .search, .game-actions, .keyboard-instructions {
         display: none;
     }
-    
+
     .game-card {
         page-break-inside: avoid;
         border: 2px solid #000;
         margin-bottom: 20px;
     }
-    
+
     body {
         background: white;
         color: black;
