@@ -13,6 +13,10 @@ const options = {
 let allGames = [];
 let currentSearch = "";
 
+// Arrow key navigation state
+let focusedCardIndex = -1;
+let gameCards = [];
+
 /* =========================
    FETCH
 ========================= */
@@ -26,12 +30,13 @@ async function getGames() {
 
         populateGenres(allGames);
         applyFilters();
+        
+        announceToScreenReader(`${allGames.length} games loaded`);
     } catch (err) {
         console.error("Failed to fetch games", err);
         const container = document.querySelector(".games-scroll");
         if (container) container.innerHTML = `<p>Failed to load games. Check console.</p>`;
-        setUIState("error", "Failed to load games. Check console.");
-
+        setUIState("error", "Failed to load games. Please try again later.");
     }
 }
 
@@ -73,9 +78,9 @@ function getLauncher(game) {
 }
 
 function renderLauncherBadge(launcher) {
-    if (launcher === "steam") return `<span class="badge badge-steam">Steam</span>`;
-    if (launcher === "epic") return `<span class="badge badge-epic">Epic</span>`;
-    if (launcher === "blizzard") return `<span class="badge badge-blizzard">Blizzard</span>`;
+    if (launcher === "steam") return `<span class="badge badge-steam" aria-label="Available on Steam">Steam</span>`;
+    if (launcher === "epic") return `<span class="badge badge-epic" aria-label="Available on Epic Games">Epic</span>`;
+    if (launcher === "blizzard") return `<span class="badge badge-blizzard" aria-label="Available on Blizzard">Blizzard</span>`;
     return "";
 }
 
@@ -103,39 +108,41 @@ function sortGames(games, sortValue) {
 
 function normalizeGenre(genre) {
     if (!genre) return "";
-
-    return genre
-        .split(",")[0]
-        .trim()
-        .toLowerCase();
+    return genre.split(",")[0].trim().toLowerCase();
 }
 
 function setUIState(type, message) {
-  const el = document.getElementById("uiState");
-  if (!el) return;
+    const el = document.getElementById("uiState");
+    if (!el) return;
 
-  if (!type) {
-    el.hidden = true;
-    el.className = "ui-state";
-    el.innerHTML = "";
-    return;
-  }
+    if (!type) {
+        el.hidden = true;
+        el.className = "ui-state";
+        el.innerHTML = "";
+        return;
+    }
 
-  el.hidden = false;
-  el.className = `ui-state ui-${type}`;
+    el.hidden = false;
+    el.className = `ui-state ui-${type}`;
 
-  if (type === "loading") {
-    el.innerHTML = `
-      <div class="spinner"></div>
-      <div class="ui-text">${message || "Loading..."}</div>
-    `;
-    return;
-  }
+    if (type === "loading") {
+        el.innerHTML = `
+            <div class="spinner" role="status" aria-label="Loading"></div>
+            <div class="ui-text">${message || "Loading..."}</div>
+        `;
+        return;
+    }
 
-  el.innerHTML = `<div class="ui-text">${message || ""}</div>`;
+    el.innerHTML = `<div class="ui-text">${message || ""}</div>`;
 }
 
-
+function announceToScreenReader(message) {
+    const announcer = document.getElementById("uiState");
+    if (announcer) {
+        setUIState("info", message);
+        setTimeout(() => setUIState(null), 3000);
+    }
+}
 
 /* =========================
    GENRES
@@ -145,21 +152,18 @@ function populateGenres(games) {
     if (!genreSelect) return;
 
     const genres = [...new Set(
-        games
-            .map(g => normalizeGenre(g.genre))
-            .filter(Boolean)
+        games.map(g => normalizeGenre(g.genre)).filter(Boolean)
     )].sort();
 
-    genreSelect.innerHTML = `<option value="all">All</option>`;
+    genreSelect.innerHTML = `<option value="all">All genres</option>`;
 
     genres.forEach(genre => {
         const opt = document.createElement("option");
         opt.value = genre;
-        opt.textContent = genre.toUpperCase();
+        opt.textContent = genre.charAt(0).toUpperCase() + genre.slice(1);
         genreSelect.appendChild(opt);
     });
 }
-
 
 /* =========================
    FILTERS + SEARCH + SORT
@@ -191,85 +195,147 @@ function applyFilters() {
     });
 
     filtered = sortGames(filtered, sortValue);
-
     renderGames(filtered);
+    
+    announceToScreenReader(`${filtered.length} games found`);
+    
+    // Update arrow key navigation
+    setTimeout(updateGameCardsList, 100);
 }
 
 /* =========================
    RENDER
 ========================= */
 function renderGames(games) {
-    if (games.length === 0) {
-  setUIState("empty", "No games match your filters or search.");
-  container.querySelectorAll(".game-card").forEach(n => n.remove());
-  return;
-}
-setUIState(null);
-
     const container = document.querySelector(".games-scroll");
     if (!container) return;
 
+    const existingH2 = container.querySelector('h2.visually-hidden');
+
     if (games.length === 0) {
-        container.innerHTML = `<p>No games match your filters or search.</p>`;
+        setUIState("empty", "No games match your filters or search.");
+        container.querySelectorAll(".game-card").forEach(n => n.remove());
+        if (existingH2) container.appendChild(existingH2);
         return;
     }
+    
+    setUIState(null);
 
-    let html = "";
+    let html = existingH2 ? existingH2.outerHTML : '<h2 class="visually-hidden">Available Games</h2>';
 
-    games.forEach(game => {
+    games.forEach((game, index) => {
         const launcher = getLauncher(game);
-
-        // favorites state (kui favorites.js olemas)
-        let favText = "Add to Favorites";
-        if (typeof isFavorite === "function") {
-            favText = isFavorite(game.id) ? "Remove Favorite" : "Add to Favorites";
-        }
+        const favorite = typeof isFavorite === "function" ? isFavorite(game.id) : false;
+        const favText = favorite ? "Remove from Favorites" : "Add to Favorites";
+        const favIcon = favorite ? "★" : "☆";
 
         html += `
-            <div class="game-card" style="background-image:url('${game.thumbnail}')">
+            <article class="game-card" 
+                     style="background-image:url('${game.thumbnail}')"
+                     data-game-id="${game.id}"
+                     data-card-index="${index}"
+                     tabindex="${index === 0 ? '0' : '-1'}"
+                     role="button"
+                     aria-label="${game.title}. Use arrow keys to navigate, Enter to view details">
                 <div class="game-content">
                     <div class="game-thumb">
-                        <img src="${game.thumbnail}" alt="${game.title}">
-                        <div class="badges">
+                        <img src="${game.thumbnail}" 
+                             alt="${game.title} game thumbnail" 
+                             loading="lazy">
+                        <div class="badges" aria-label="Game badges">
                             ${renderLauncherBadge(launcher)}
+                            ${favorite ? '<span class="badge badge-favorite" aria-label="Favorited">★</span>' : ''}
                         </div>
                     </div>
 
                     <h3>${game.title}</h3>
-                    <p>${game.genre}</p>
-                    <p>${game.publisher}</p>
-                    <p>${formatDate(game.release_date)}</p>
-                    <p>${game.platform}</p>
+                    
+                    <dl class="game-meta">
+                        <div class="meta-item">
+                            <dt class="visually-hidden">Genre:</dt>
+                            <dd>${game.genre}</dd>
+                        </div>
+                        <div class="meta-item">
+                            <dt class="visually-hidden">Publisher:</dt>
+                            <dd>${game.publisher}</dd>
+                        </div>
+                        <div class="meta-item">
+                            <dt class="visually-hidden">Release date:</dt>
+                            <dd>${formatDate(game.release_date)}</dd>
+                        </div>
+                        <div class="meta-item">
+                            <dt class="visually-hidden">Platform:</dt>
+                            <dd>${game.platform}</dd>
+                        </div>
+                    </dl>
 
                     <div class="game-actions">
-                        <button type="button" onclick="window.location.href='game.html?id=${game.id}'">
+                        <button type="button" 
+                                class="btn-details"
+                                data-game-id="${game.id}"
+                                aria-label="View details for ${game.title}">
                             View Details
                         </button>
 
-                        <button
-                            type="button"
-                            class="fav-btn"
-                            data-id="${game.id}">
-                            ${favText}
+                        <button type="button"
+                                class="btn-favorite ${favorite ? 'btn-favorite-active' : ''}"
+                                data-game-id="${game.id}"
+                                aria-label="${favText} ${game.title}"
+                                aria-pressed="${favorite}">
+                            <span aria-hidden="true">${favIcon}</span> ${favText}
                         </button>
                     </div>
                 </div>
-            </div>
+            </article>
         `;
     });
 
     container.innerHTML = html;
+    
+    attachGameCardListeners();
+    updateGameCardsList();
 }
 
 /* =========================
-   FAVORITES EVENTS
+   EVENT LISTENERS
 ========================= */
-document.addEventListener("click", (e) => {
-    const favBtn = e.target.closest(".fav-btn");
-    if (!favBtn) return;
+function attachGameCardListeners() {
+    // View Details buttons
+    document.querySelectorAll('.btn-details').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const gameId = e.currentTarget.dataset.gameId;
+            window.location.href = `game.html?id=${gameId}`;
+        });
+    });
 
-    // kui auth.js + favorites.js pole laetud, siis ei tee midagi
-    if (typeof getCurrentUser !== "function" || typeof toggleFavorite !== "function") return;
+    // Favorite buttons
+    document.querySelectorAll('.btn-favorite').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleFavoriteClick(e);
+        });
+    });
+    
+    // Card click (for arrow key selection)
+    document.querySelectorAll('.game-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Only if not clicking a button
+            if (!e.target.closest('button')) {
+                const index = parseInt(card.dataset.cardIndex);
+                focusCard(index);
+            }
+        });
+    });
+}
+
+function handleFavoriteClick(e) {
+    const btn = e.currentTarget;
+    const gameId = btn.dataset.gameId;
+    
+    if (typeof getCurrentUser !== "function" || typeof toggleFavorite !== "function") {
+        return;
+    }
 
     const user = getCurrentUser();
     if (!user) {
@@ -277,27 +343,161 @@ document.addEventListener("click", (e) => {
         return;
     }
 
-    const id = favBtn.dataset.id;
-    const game = allGames.find(g => String(g.id) === String(id));
+    const game = allGames.find(g => String(g.id) === String(gameId));
     if (!game) return;
 
     const added = toggleFavorite(game);
-
-    // uuenda nupu tekst
-    favBtn.textContent = added ? "Remove Favorite" : "Add to Favorites";
-});
+    
+    const newText = added ? "Remove from Favorites" : "Add to Favorites";
+    const newIcon = added ? "★" : "☆";
+    btn.innerHTML = `<span aria-hidden="true">${newIcon}</span> ${newText}`;
+    btn.setAttribute('aria-label', `${newText} ${game.title}`);
+    btn.setAttribute('aria-pressed', added);
+    btn.classList.toggle('btn-favorite-active', added);
+    
+    announceToScreenReader(added ? `${game.title} added to favorites` : `${game.title} removed from favorites`);
+}
 
 /* =========================
-   EVENTS
+   ARROW KEY NAVIGATION
+========================= */
+function updateGameCardsList() {
+    gameCards = Array.from(document.querySelectorAll('.game-card'));
+    
+    if (focusedCardIndex >= gameCards.length) {
+        focusedCardIndex = gameCards.length - 1;
+    }
+}
+
+function getGridDimensions() {
+    if (gameCards.length === 0) return { columns: 0, rows: 0 };
+    
+    const container = document.querySelector('.games-scroll');
+    const firstCard = gameCards[0];
+    if (!container || !firstCard) return { columns: 0, rows: 0 };
+    
+    const containerWidth = container.clientWidth;
+    const cardWidth = firstCard.offsetWidth;
+    const gap = 32;
+    
+    const columns = Math.floor((containerWidth + gap) / (cardWidth + gap));
+    const rows = Math.ceil(gameCards.length / columns);
+    
+    return { columns, rows };
+}
+
+function handleArrowKeyNavigation(e) {
+    const activeElement = document.activeElement;
+    const isInGamesArea = activeElement.closest('.games-scroll') || 
+                         activeElement.classList.contains('game-card');
+    
+    // Only handle if in games area or has focused card
+    if (!isInGamesArea && focusedCardIndex === -1) return;
+    
+    if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '].includes(e.key)) {
+        return;
+    }
+    
+    // Prevent scrolling
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+        e.preventDefault();
+    }
+    
+    const { columns } = getGridDimensions();
+    
+    // Initialize focus if needed
+    if (focusedCardIndex === -1 && gameCards.length > 0) {
+        focusedCardIndex = 0;
+        focusCard(0);
+        return;
+    }
+    
+    let newIndex = focusedCardIndex;
+    
+    switch(e.key) {
+        case 'ArrowRight':
+            newIndex = Math.min(focusedCardIndex + 1, gameCards.length - 1);
+            break;
+        case 'ArrowLeft':
+            newIndex = Math.max(focusedCardIndex - 1, 0);
+            break;
+        case 'ArrowDown':
+            newIndex = Math.min(focusedCardIndex + columns, gameCards.length - 1);
+            break;
+        case 'ArrowUp':
+            newIndex = Math.max(focusedCardIndex - columns, 0);
+            break;
+        case 'Enter':
+        case ' ':
+            const card = gameCards[focusedCardIndex];
+            if (card) {
+                const detailsBtn = card.querySelector('.btn-details');
+                if (detailsBtn) detailsBtn.click();
+            }
+            return;
+    }
+    
+    if (newIndex !== focusedCardIndex) {
+        focusCard(newIndex);
+    }
+}
+
+function focusCard(index) {
+    if (index < 0 || index >= gameCards.length) return;
+    
+    // Remove focus from all
+    gameCards.forEach(card => {
+        card.setAttribute('tabindex', '-1');
+        card.classList.remove('card-focused');
+    });
+    
+    // Focus new card
+    const card = gameCards[index];
+    card.setAttribute('tabindex', '0');
+    card.classList.add('card-focused');
+    card.focus();
+    
+    card.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'nearest',
+        inline: 'nearest'
+    });
+    
+    focusedCardIndex = index;
+    
+    const title = card.querySelector('h3')?.textContent || 'Game';
+    const position = `${index + 1} of ${gameCards.length}`;
+    announceToScreenReader(`${title}, ${position}`);
+}
+
+function addKeyboardInstructions() {
+    const container = document.querySelector('.games-scroll');
+    if (!container || document.querySelector('.keyboard-instructions')) return;
+    
+    const instructions = document.createElement('div');
+    instructions.className = 'keyboard-instructions';
+    instructions.setAttribute('role', 'region');
+    instructions.setAttribute('aria-label', 'Keyboard navigation instructions');
+    instructions.innerHTML = `
+        <p><strong>Keyboard:</strong> Tab = buttons, Arrow keys = navigate games, Enter = view details</p>
+    `;
+    
+    container.parentElement.insertBefore(instructions, container);
+}
+
+/* =========================
+   INIT
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
     getGames();
 
+    // Filters
     document.getElementById("platformFilter")?.addEventListener("change", applyFilters);
     document.getElementById("launcherFilter")?.addEventListener("change", applyFilters);
     document.getElementById("genreFilter")?.addEventListener("change", applyFilters);
     document.getElementById("sortFilter")?.addEventListener("change", applyFilters);
 
+    // Search
     const searchForm = document.getElementById("searchForm");
     const searchInput = document.getElementById("searchInput");
 
@@ -308,9 +508,19 @@ document.addEventListener("DOMContentLoaded", () => {
             applyFilters();
         });
 
+        let searchTimeout;
         searchInput.addEventListener("input", () => {
-            currentSearch = searchInput.value || "";
-            applyFilters();
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                currentSearch = searchInput.value || "";
+                applyFilters();
+            }, 300);
         });
     }
+    
+    // Arrow key navigation
+    document.addEventListener('keydown', handleArrowKeyNavigation);
+    
+    // Add instructions
+    setTimeout(addKeyboardInstructions, 1000);
 });

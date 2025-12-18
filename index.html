@@ -3,51 +3,55 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Free Game Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse and discover free-to-play games across multiple platforms">
+    <title>Free Game Explorer - Discover Free Games</title>
     <link rel="stylesheet" href="css/style.css">
-
-
 </head>
 
 <body>
-    <div class="crt-overlay"></div>
+    <!-- Skip to main content link for keyboard users -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
+    <div class="crt-overlay" aria-hidden="true"></div>
 
-    <header class="top-header">
-        <nav class="nav-left">
-            <a href="index.html" class="nav-link">Home</a>
+    <header class="top-header" role="banner">
+        <nav class="nav-left" aria-label="Main navigation">
+            <a href="index.html" class="nav-link" aria-current="page">Home</a>
             <a href="favorites.html" class="nav-link">My Favourites</a>
         </nav>
 
         <h1 class="site-title">Free Games Explorer</h1>
 
         <div class="header-right">
-            <form id="searchForm" class="search">
-                <input id="searchInput" type="text" placeholder="Search for games..." autocomplete="off" />
-                <button type="submit">Search</button>
+            <form id="searchForm" class="search" role="search" aria-label="Search games">
+                <label for="searchInput" class="visually-hidden">Search for games</label>
+                <input id="searchInput" type="search" placeholder="Search for games..." autocomplete="off"
+                    aria-label="Search games by title" />
+                <button type="submit" aria-label="Submit search">Search</button>
             </form>
 
             <a href="login.html" class="nav-link login-btn">Log in</a>
         </div>
     </header>
 
-
     <div class="container">
-        <aside class="filters">
+        <aside class="filters" aria-label="Game filters">
+            <h2 class="visually-hidden">Filter Games</h2>
 
             <div class="filter-box">
-                <h3>Platform</h3>
-                <select id="platformFilter">
-                    <option value="all">All</option>
+                <h3 id="platform-label">Platform</h3>
+                <select id="platformFilter" aria-labelledby="platform-label">
+                    <option value="all">All platforms</option>
                     <option value="windows">Windows</option>
                     <option value="browser">Browser</option>
                 </select>
             </div>
 
             <div class="filter-box">
-                <h3>Launcher</h3>
-                <select id="launcherFilter">
-                    <option value="all">All</option>
+                <h3 id="launcher-label">Launcher</h3>
+                <select id="launcherFilter" aria-labelledby="launcher-label">
+                    <option value="all">All launchers</option>
                     <option value="steam">Steam</option>
                     <option value="epic">Epic Games</option>
                     <option value="blizzard">Blizzard</option>
@@ -55,38 +59,34 @@
             </div>
 
             <div class="filter-box">
-                <h3>Genre</h3>
-                <select id="genreFilter">
-                    <option value="all">All</option>
+                <h3 id="genre-label">Genre</h3>
+                <select id="genreFilter" aria-labelledby="genre-label">
+                    <option value="all">All genres</option>
                 </select>
             </div>
 
             <div class="filter-box">
-                <h3>Sort by</h3>
-                <select id="sortFilter">
-                    <option value="default">Default</option>
+                <h3 id="sort-label">Sort by</h3>
+                <select id="sortFilter" aria-labelledby="sort-label">
+                    <option value="default">Default order</option>
                     <option value="az">A to Z</option>
                     <option value="za">Z to A</option>
-                    <option value="newest">Release date, newest</option>
-                    <option value="oldest">Release date, oldest</option>
+                    <option value="newest">Release date, newest first</option>
+                    <option value="oldest">Release date, oldest first</option>
                 </select>
             </div>
-
         </aside>
 
-
-        <main class="games-scroll">
-            <div id="uiState" class="ui-state" hidden></div>
-            <!-- JS renderdab mängud siia -->
+        <main id="main-content" class="games-scroll" role="main" aria-label="Games list">
+            <div id="uiState" class="ui-state" hidden aria-live="polite" aria-atomic="true"></div>
+            <h2 class="visually-hidden">Available Games</h2>
+            <!-- JS renders games here -->
         </main>
     </div>
 
     <script src="js/auth.js" defer></script>
     <script src="js/favorites.js" defer></script>
     <script src="js/main.js" defer></script>
-
-
-
 </body>
 
 </html>
