@@ -1377,3 +1377,305 @@ button:focus-visible {
         color: black;
     }
 }
+
+/* KEYBOARD INSTRUCTIONS FIX */
+.keyboard-instructions {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    background: rgba(0, 0, 0, 0.9);
+    color: #ffffff;
+
+    border: 2px solid #AF587B;
+    padding: 10px 16px;
+    border-radius: 6px;
+
+    z-index: 2000;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+
+    max-width: 300px;
+
+    pointer-events: auto;
+}
+
+/* text inside */
+.keyboard-instructions p {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.keyboard-instructions strong {
+    color: #EEE8EC;
+    font-weight: 700;
+}
+
+/* IMPORTANT: never affect layout */
+.container .keyboard-instructions,
+.games-scroll .keyboard-instructions {
+    position: fixed;
+}
+
+/* Mobile hide, nagu enne */
+@media (max-width: 768px) {
+    .keyboard-instructions {
+        display: none;
+    }
+}
+
+/* =========================
+   DETAILS, SCREENSHOTS CAROUSEL
+========================= */
+
+.shots-section {
+  margin-top: var(--space-lg);
+}
+
+.shots-carousel {
+  display: grid;
+  grid-template-columns: 140px 1fr 140px;
+  gap: var(--space-md);
+  align-items: center;
+  margin-top: var(--space-md);
+}
+
+.carousel-btn {
+  padding: 12px 12px;
+  border: var(--border-thick) solid var(--color-black);
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.6px;
+}
+
+.carousel-btn:hover {
+  background: var(--gradient);
+  background-size: 220% 220%;
+  animation: gradientShift 1.6s ease infinite;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--color-black);
+}
+
+.carousel-btn:active {
+  transform: translateY(0);
+  box-shadow: 2px 2px 0 var(--color-black);
+}
+
+.carousel-btn:focus-visible {
+  outline: 4px solid #AF587B;
+  outline-offset: 3px;
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 6px 6px 0 #000;
+}
+
+.shots-viewport {
+  overflow: hidden;
+  border: var(--border-thick) solid var(--color-black);
+  background: var(--color-light-gray);
+  box-shadow: 8px 8px 0 var(--color-purple);
+}
+
+.shots-track {
+  display: flex;
+  width: 100%;
+  transform: translateX(0%);
+  transition: transform 320ms ease;
+  will-change: transform;
+}
+
+.shot-slide {
+  flex: 0 0 100%;
+  height: 420px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.shot-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Dots */
+.carousel-dots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: var(--space-md);
+}
+
+.carousel-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid var(--color-black);
+  background: var(--color-white);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.carousel-dot:hover {
+  transform: translateY(-1px);
+  box-shadow: 2px 2px 0 var(--color-black);
+}
+
+.carousel-dot[aria-current="true"] {
+  background: var(--gradient);
+  background-size: 220% 220%;
+  animation: gradientShift 1.6s ease infinite;
+  border-color: var(--color-black);
+  transform: scale(1.05);
+}
+
+/* Make sure gradientShift exists, if not already */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .shots-carousel {
+    grid-template-columns: 120px 1fr 120px;
+  }
+  .shot-slide {
+    height: 360px;
+  }
+}
+
+@media (max-width: 768px) {
+  .shots-carousel {
+    grid-template-columns: 1fr;
+  }
+
+  .carousel-btn.prev {
+    order: 2;
+  }
+
+  .carousel-btn.next {
+    order: 3;
+  }
+
+  .shots-viewport {
+    order: 1;
+  }
+
+  .shot-slide {
+    height: 240px;
+  }
+}
+
+/* BACK TO TOP LINK */
+
+.back-to-top {
+  display: inline-block;
+  margin-top: var(--space-xl);
+
+  padding: 12px 24px;
+  border: var(--border-thick) solid var(--color-black);
+
+  background: var(--color-white);
+  color: var(--color-black);
+
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  text-decoration: none;
+
+  transition: all 0.15s ease;
+}
+
+.back-to-top:hover {
+  background: var(--gradient);
+  background-size: 220% 220%;
+  animation: gradientShift 1.6s ease infinite;
+
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--color-black);
+}
+
+.back-to-top:focus-visible {
+  outline: 4px solid #AF587B;
+  outline-offset: 4px;
+
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 6px 6px 0 #000;
+}
+
+
+/* main page only floating back to top button */
+
+.back-to-top-float {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 2500;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+
+  border: var(--border-thick) solid var(--color-black);
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  text-decoration: none;
+
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: all 0.15s ease;
+}
+
+.back-to-top-float:hover {
+  background: var(--gradient);
+  background-size: 220% 220%;
+  animation: gradientShift 1.6s ease infinite;
+
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 #000;
+}
+
+.back-to-top-float:active {
+  transform: translateY(0);
+  box-shadow: 3px 3px 0 #000;
+}
+
+.back-to-top-float:focus-visible {
+  outline: 4px solid #AF587B;
+  outline-offset: 4px;
+
+  background: var(--gradient);
+  background-size: 220% 220%;
+  animation: gradientShift 1.6s ease infinite;
+
+  box-shadow: 8px 8px 0 #000;
+}
