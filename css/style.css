@@ -1771,3 +1771,22 @@ button:focus-visible {
     box-shadow: 0 4px 16px rgba(232, 121, 198, 0.4);
     border-color: #e879c6;
 }
+
+/* Dark mode for back to top float button */
+:root[data-theme="dark"] .back-to-top-float {
+    border-color: #ffffff;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1a1a1a;
+}
+
+:root[data-theme="dark"] .back-to-top-float:hover {
+    box-shadow: 6px 6px 0 #fff;
+}
+
+:root[data-theme="dark"] .back-to-top-float:active {
+    box-shadow: 3px 3px 0 #fff;
+}
+
+:root[data-theme="dark"] .back-to-top-float:focus-visible {
+    box-shadow: 8px 8px 0 #fff;
+}

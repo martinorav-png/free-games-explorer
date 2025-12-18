@@ -348,12 +348,8 @@ function handleFavoriteClick(e) {
 
     const added = toggleFavorite(game);
     
-    const newText = added ? "Remove from Favorites" : "Add to Favorites";
-    const newIcon = added ? "★" : "☆";
-    btn.innerHTML = `<span aria-hidden="true">${newIcon}</span> ${newText}`;
-    btn.setAttribute('aria-label', `${newText} ${game.title}`);
-    btn.setAttribute('aria-pressed', added);
-    btn.classList.toggle('btn-favorite-active', added);
+    // Refresh the entire game list to update all favorite states
+    applyFilters();
     
     announceToScreenReader(added ? `${game.title} added to favorites` : `${game.title} removed from favorites`);
 }
@@ -388,6 +384,16 @@ function getGridDimensions() {
 
 function handleArrowKeyNavigation(e) {
     const activeElement = document.activeElement;
+    
+    // Don't interfere with back to top button or other UI elements
+    if (activeElement.classList.contains('back-to-top-float') || 
+        activeElement.classList.contains('theme-toggle') ||
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'SELECT' ||
+        activeElement.tagName === 'A' && !activeElement.classList.contains('game-card')) {
+        return;
+    }
+    
     const isInGamesArea = activeElement.closest('.games-scroll') || 
                          activeElement.classList.contains('game-card');
     
@@ -398,7 +404,7 @@ function handleArrowKeyNavigation(e) {
         return;
     }
     
-    // Prevent scrolling
+    // Prevent scrolling only when in games area
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
         e.preventDefault();
     }
@@ -479,7 +485,7 @@ function addKeyboardInstructions() {
     instructions.setAttribute('role', 'region');
     instructions.setAttribute('aria-label', 'Keyboard navigation instructions');
     instructions.innerHTML = `
-        <p><strong>Keyboard:</strong> Tab = buttons, Arrow keys = navigate games, Enter = view details</p>
+        <p><strong>Keyboard:</strong> Home = top, End = bottom, Arrow keys = navigate games, Enter = view details</p>
     `;
     
     container.parentElement.insertBefore(instructions, container);
@@ -520,6 +526,22 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Arrow key navigation
     document.addEventListener('keydown', handleArrowKeyNavigation);
+    
+    // Quick scroll shortcuts
+    document.addEventListener('keydown', (e) => {
+        // Home key - scroll to top
+        if (e.key === 'Home' && !e.target.matches('input, textarea, select')) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('top')?.focus();
+        }
+        
+        // End key - scroll to bottom
+        if (e.key === 'End' && !e.target.matches('input, textarea, select')) {
+            e.preventDefault();
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    });
     
     // Add instructions
     setTimeout(addKeyboardInstructions, 1000);
