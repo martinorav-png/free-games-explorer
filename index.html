@@ -34,54 +34,60 @@
     </header>
 
     <div class="container">
-        <aside class="filters" aria-label="Game filters">
-            <h2 class="visually-hidden">Filter Games</h2>
+        <!-- Filters: wrapper + inner scroll area -->
+        <aside class="filters scroll-shadow-wrapper" aria-label="Game filters">
+            <div class="scroll-shadow-content" aria-label="Scrollable filters">
+                <h2 class="visually-hidden">Filter Games</h2>
 
-            <div class="filter-box">
-                <h3 id="platform-label">Platform</h3>
-                <select id="platformFilter" aria-labelledby="platform-label">
-                    <option value="all">All platforms</option>
-                    <option value="windows">Windows</option>
-                    <option value="browser">Browser</option>
-                </select>
-            </div>
+                <div class="filter-box">
+                    <h3 id="platform-label">Platform</h3>
+                    <select id="platformFilter" aria-labelledby="platform-label">
+                        <option value="all">All platforms</option>
+                        <option value="windows">Windows</option>
+                        <option value="browser">Browser</option>
+                    </select>
+                </div>
 
-            <div class="filter-box">
-                <h3 id="launcher-label">Launcher</h3>
-                <select id="launcherFilter" aria-labelledby="launcher-label">
-                    <option value="all">All launchers</option>
-                    <option value="steam">Steam</option>
-                    <option value="epic">Epic Games</option>
-                    <option value="blizzard">Blizzard</option>
-                </select>
-            </div>
+                <div class="filter-box">
+                    <h3 id="launcher-label">Launcher</h3>
+                    <select id="launcherFilter" aria-labelledby="launcher-label">
+                        <option value="all">All launchers</option>
+                        <option value="steam">Steam</option>
+                        <option value="epic">Epic Games</option>
+                        <option value="blizzard">Blizzard</option>
+                    </select>
+                </div>
 
-            <div class="filter-box">
-                <h3 id="genre-label">Genre</h3>
-                <select id="genreFilter" aria-labelledby="genre-label">
-                    <option value="all">All genres</option>
-                </select>
-            </div>
+                <div class="filter-box">
+                    <h3 id="genre-label">Genre</h3>
+                    <select id="genreFilter" aria-labelledby="genre-label">
+                        <option value="all">All genres</option>
+                    </select>
+                </div>
 
-            <div class="filter-box">
-                <h3 id="sort-label">Sort by</h3>
-                <select id="sortFilter" aria-labelledby="sort-label">
-                    <option value="default">Default order</option>
-                    <option value="az">A to Z</option>
-                    <option value="za">Z to A</option>
-                    <option value="newest">Release date, newest first</option>
-                    <option value="oldest">Release date, oldest first</option>
-                </select>
+                <div class="filter-box">
+                    <h3 id="sort-label">Sort by</h3>
+                    <select id="sortFilter" aria-labelledby="sort-label">
+                        <option value="default">Default order</option>
+                        <option value="az">A to Z</option>
+                        <option value="za">Z to A</option>
+                        <option value="newest">Release date, newest first</option>
+                        <option value="oldest">Release date, oldest first</option>
+                    </select>
+                </div>
             </div>
         </aside>
 
-        <main id="main-content" class="games-scroll" role="main" aria-label="Games list">
-            <div id="uiState" class="ui-state" hidden aria-live="polite" aria-atomic="true"></div>
-            <h2 class="visually-hidden">Available Games</h2>
-            <!-- JS renders games here -->
-        </main>
+        <div class="scroll-shadow-wrapper games-shadow" role="region" aria-label="Scrollable games area">
+            <main id="main-content" class="games-scroll scroll-shadow-content" role="main" aria-label="Games list">
+                <div id="uiState" class="ui-state" hidden aria-live="polite" aria-atomic="true"></div>
+                <h2 class="visually-hidden">Available Games</h2>
+                <!-- JS renders games here -->
+            </main>
+        </div>
     </div>
 
+    <!-- Floating Top -->
     <a href="#top" class="back-to-top-float" aria-label="Back to top">
         ↑ Top
     </a>
