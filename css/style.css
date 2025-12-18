@@ -1,5 +1,5 @@
 /* ===================================
-   PLAYSTATION magazine inspireeritud disain
+   PLAYSTATION MAGAZINE inspireeritud CSS disain
 =================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Archivo+Black&display=swap');
@@ -38,7 +38,7 @@
 }
 
 /* ===================================
-   Base style
+   BASE STYLES
 =================================== */
 
 * {
@@ -125,7 +125,7 @@ body::before {
     gap: var(--space-lg);
 }
 
-/* Navigation */
+/* Navigation - Magazine sections */
 .nav-left {
     display: flex;
     gap: var(--space-xs);
@@ -423,7 +423,7 @@ body::before {
     opacity: 1;
 }
 
-/* Game card focus*/
+/* Game card focus-within (when tabbing to buttons inside) */
 .game-card:focus-within {
     outline: 4px solid #d946a6;
     outline-offset: 4px;
@@ -433,7 +433,7 @@ body::before {
         0 0 30px rgba(217, 70, 166, 0.4);
 }
 
-/* Background image*/
+/* Background image - subtle duotone */
 .game-card::before {
     content: '';
     position: absolute;
@@ -696,16 +696,16 @@ body::before {
     font-weight: 700;
 }
 
-/* Card focused state with arrow keys*/
+/* Card focused state with arrow keys, oluline nähtavus */
 .game-card.card-focused {
     outline: 6px solid #8b4789;
     outline-offset: 6px;
-    transform: translate(-8px, -8px);
+    transform: translate(0, 0);
     box-shadow: 
-        12px 12px 0 #8b4789,
-        0 0 0 12px rgba(139, 71, 137, 0.3),
-        0 0 40px rgba(139, 71, 137, 0.5);
-    z-index: 100;
+        0 0 0 12px rgba(139, 71, 137, 0.4),
+        0 0 40px rgba(139, 71, 137, 0.6),
+        0 0 80px rgba(139, 71, 137, 0.3);
+    z-index: 10;
     position: relative;
 }
 
@@ -716,7 +716,7 @@ body::before {
 
 .game-card.card-focused .game-content {
     background: rgba(255, 255, 255, 1);
-    border: 3px solid #8b4789;
+    border: 2px solid #b47eb3;
 }
 
 /* Pulse animation for focused card - STRONGER */
@@ -727,34 +727,45 @@ body::before {
 @keyframes cardFocusPulse {
     0%, 100% {
         box-shadow: 
-            12px 12px 0 #8b4789,
-            0 0 0 12px rgba(139, 71, 137, 0.3),
-            0 0 40px rgba(139, 71, 137, 0.5);
+            0 0 0 12px rgba(139, 71, 137, 0.4),
+            0 0 40px rgba(139, 71, 137, 0.6),
+            0 0 80px rgba(139, 71, 137, 0.3);
     }
     50% {
         box-shadow: 
-            12px 12px 0 #8b4789,
-            0 0 0 12px rgba(139, 71, 137, 0.5),
-            0 0 60px rgba(139, 71, 137, 0.8);
+            0 0 0 12px rgba(139, 71, 137, 0.6),
+            0 0 60px rgba(139, 71, 137, 0.8),
+            0 0 100px rgba(139, 71, 137, 0.5);
     }
 }
 
-/* Arrow key indicator */
+/* Arrow key indicator*/
+.game-card::after {
+    display: none;
+}
+
 .game-card.card-focused::after {
-    content: '◄ ► ▲ ▼';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    content: '▲▼◄►';
     position: absolute;
-    top: -35px;
-    right: 10px;
+    top: 8px;
+    left: 8px;
     background: #8b4789;
     color: white;
-    padding: 6px 14px;
-    font-size: 14px;
-    border-radius: 6px;
+    padding: 3px 5px;
+    font-size: 8px;
+    border-radius: 2px;
     font-weight: 900;
-    letter-spacing: 4px;
-    z-index: 100;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    border: 2px solid #fff;
+    letter-spacing: 0px;
+    z-index: 20;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    border: 1px solid white;
+    line-height: 1;
+    height: 16px;
+    width: auto;
+    white-space: nowrap;
 }
 
 /* Mobile - hide arrow indicator */
@@ -1330,7 +1341,6 @@ body::before {
    ACCESSIBILITY - FOCUS STATES
 =================================== */
 
-/* Remove default focus outline, add custom */
 *:focus {
     outline: none;
 }
@@ -1345,7 +1355,7 @@ select:focus-visible {
     box-shadow: 0 0 0 8px rgba(139, 71, 137, 0.3);
 }
 
-/* Button focus - BLACK OUTLINE for editorial style */
+/* Button focus */
 button:focus-visible {
     outline: 4px solid #000;
     outline-offset: 3px;
@@ -1356,7 +1366,7 @@ button:focus-visible {
 }
 
 /* ===================================
-   REDUCED MOTION & HIGH CONTRAST
+   REDUCED MOTION ja HIGH CONTRAST
 =================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1397,25 +1407,6 @@ button:focus-visible {
     }
 }
 
-/* ===================================
-   CRT OVERLAY (OPTIONAL)
-=================================== */
-
-.crt-overlay {
-    pointer-events: none;
-}
-
-/* Print-style dot pattern (optional) */
-body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, var(--color-black) 0.5px, transparent 0.5px);
-    background-size: 4px 4px;
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 9998;
-}
 
 /* ===================================
    PRINT STYLES
